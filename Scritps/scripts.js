@@ -10,13 +10,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const subject = document.getElementById('subject').value;
         const message = document.getElementById('message').value;
 
-        // Aquí iría la lógica para enviar el correo
-        console.log('Correo enviado:', { to, cc, subject, message });
+        const jsonData = JSON.stringify(formData);
 
-        // Ejemplo de cómo podrías mostrar un mensaje de éxito
-        alert('Correo enviado con éxito!');
+        // Enviar los datos al backend
+        fetch('http://localhost:8080/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: jsonData
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Correo enviado con éxito!');
+            form.reset();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Error al enviar el correo');
+        });
 
-        // Opcionalmente, limpiar el formulario
-        form.reset();
+       
     });
 });
